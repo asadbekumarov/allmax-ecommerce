@@ -9,6 +9,8 @@ export type ProductType = {
   sizes: string[];
   colors: string[];
   images: Record<string, string>;
+  stock?: Record<string, number>;
+  category?: string;
 };
 
 export type ProductsType = ProductType[];
@@ -21,16 +23,33 @@ export type CartItemType = ProductType & {
 
 export type CartItemsType = CartItemType[];
 
+export const UZBEKISTAN_REGIONS = [
+  "Toshkent shahri",
+  "Toshkent viloyati",
+  "Andijon",
+  "Buxoro",
+  "Fargʻona",
+  "Jizzax",
+  "Xorazm",
+  "Namangan",
+  "Navoiy",
+  "Qashqadaryo",
+  "Samarqand",
+  "Sirdaryo",
+  "Surxondaryo",
+  "Qoraqalpogʻiston Respublikasi",
+] as const;
+
 export const shippingFormSchema = z.object({
-  name: z.string().min(1, "Name is required!"),
-  email: z.email().min(1, "Email is required!"),
+  name: z.string().min(1, "Ism va familiya kiritilishi shart!"),
+  email: z.string().email("Noto'g'ri email manzili!").min(1, "Email kiritilishi shart!"),
   phone: z
     .string()
-    .min(7, "Phone number must be between 7 and 10 digits!")
-    .max(10, "Phone number must be between 7 and 10 digits!")
-    .regex(/^\d+$/, "Phone number must contain only numbers!"),
-  address: z.string().min(1, "Address is required!"),
-  city: z.string().min(1, "City is required!"),
+    .min(9, "Telefon raqamini to'liq kiriting!")
+    .regex(/^[+]?[0-9\s-]+$/, "Faqat raqamlar kiritilishi kerak!"),
+  region: z.string().min(1, "Yetkazib berish viloyatini tanlang!"),
+  address: z.string().min(1, "Aniq manzil yoki ko'cha kiritilishi shart!"),
+  notes: z.string().optional(),
 });
 
 export type ShippingFormInputs = z.infer<typeof shippingFormSchema>;

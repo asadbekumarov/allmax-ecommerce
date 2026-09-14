@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Montserrat, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import TopBar from "@/components/TopBar";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const montserrat = Montserrat({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-montserrat",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
+  variable: "--font-serif",
 });
 
 export const metadata: Metadata = {
-  title: "Trendlama - Best Clothes",
-  description: "Trendlama is the best place to find the best clothes",
+  title: "ALLMAX | Hamyonbop Narxlar Fix Price - Erkaklar Kiyim Do'koni",
+  description: "ALLMAX Fix Price erkaklar kiyimlari do'koni. Toshkent sh., Chilonzor, Bunyodkor Korzinka pastki qavati. 24/7 ochiq. Tel: +998 (78) 555-31-31",
 };
 
 export default function RootLayout({
@@ -26,16 +31,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="uz" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${montserrat.className} ${playfair.variable} bg-[#0a0a0a] text-white antialiased selection:bg-[#22c55e] selection:text-black min-h-screen flex flex-col justify-between`}
       >
-        <div className="mx-auto p-4 sm:px-0 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-6xl">
-          <Navbar />
+        {/* TOP BAR */}
+        <TopBar />
+
+        {/* HEADER / NAVBAR */}
+        <Navbar />
+
+        {/* MAIN CONTENT */}
+        <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
           {children}
-          <Footer />
-        </div>
-        <ToastContainer position="bottom-right" />
+        </main>
+
+        {/* FOOTER */}
+        <Footer />
+
+        <ToastContainer
+          position="bottom-right"
+          theme="dark"
+          toastClassName="bg-[#141414] text-white border border-[#262626]"
+        />
       </body>
     </html>
   );

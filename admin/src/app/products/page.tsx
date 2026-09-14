@@ -1,16 +1,23 @@
 import { Product, columns } from "./columns";
 import { DataTable } from "./data-table";
+import { Button } from "@/components/ui/button";
+import { PackagePlus, Shirt } from "lucide-react";
+import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Tovarlar Ro'yxati | ALLMAX Fix Price Admin",
+  description: "ALLMAX Fix Price do'koni tovarlar katalogi",
+};
 
 const getData = async (): Promise<Product[]> => {
   return [
     {
       id: 1,
-      name: "Adidas CoreFit T-Shirt",
-      shortDescription:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      description:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      price: 39.9,
+      name: "ALLMAX Classic Polo Futbolka",
+      shortDescription: "Erkaklar uchun 100% paxtali premium kundalik polo.",
+      description: "ALLMAX Fix Price standart polkasidagi qulay va nafas oluvchi erkaklar polosi.",
+      price: 99000,
       sizes: ["s", "m", "l", "xl", "xxl"],
       colors: ["gray", "purple", "green"],
       images: {
@@ -21,24 +28,20 @@ const getData = async (): Promise<Product[]> => {
     },
     {
       id: 2,
-      name: "Puma Ultra Warm Zip",
-      shortDescription:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      description:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      price: 59.9,
+      name: "ALLMAX Qishki Issiq Tolovka",
+      shortDescription: "Ichki qismi junli, sovuq kunlar uchun mo'ljallangan qulay tolovka.",
+      description: "ALLMAX qishki kolleksiyasidan issiq va yumshoq tolovka.",
+      price: 149000,
       sizes: ["s", "m", "l", "xl"],
       colors: ["gray", "green"],
       images: { gray: "/products/2g.png", green: "/products/2gr.png" },
     },
     {
       id: 3,
-      name: "Nike Air Essentials Pullover",
-      shortDescription:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      description:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      price: 69.9,
+      name: "ALLMAX Sportiv Hudi Pullover",
+      shortDescription: "Erkaklar sportiv uslubidagi kapyushonli hudi.",
+      description: "Sport va shahar hayoti uchun mukammal uslubdagi kapyushonli hudi.",
+      price: 149000,
       sizes: ["s", "m", "l"],
       colors: ["green", "blue", "black"],
       images: {
@@ -49,25 +52,21 @@ const getData = async (): Promise<Product[]> => {
     },
     {
       id: 4,
-      name: "Nike Dri Flex T-Shirt",
-      shortDescription:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      description:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      price: 29.9,
+      name: "ALLMAX Yozgi Paxtali Mayka",
+      shortDescription: "Yengil va nafas oluvchi yozgi futbolka.",
+      description: "Issiq ob-havo uchun hamyonbop va qulay paxtali mayka.",
+      price: 49000,
       sizes: ["s", "m", "l"],
       colors: ["white", "pink"],
       images: { white: "/products/4w.png", pink: "/products/4p.png" },
     },
     {
       id: 5,
-      name: "Under Armour StormFleece",
-      shortDescription:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      description:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      price: 49.9,
-      sizes: ["s", "m", "l"],
+      name: "ALLMAX Demisezon Kurtka",
+      shortDescription: "Suv o'tkazmaydigan premium shamolbardosh kurtka.",
+      description: "Kuz va erta bahor mavsumi uchun zamonaviy dizayndagi himoyalovchi kurtka.",
+      price: 199000,
+      sizes: ["s", "m", "l", "xl"],
       colors: ["red", "orange", "black"],
       images: {
         red: "/products/5r.png",
@@ -77,53 +76,57 @@ const getData = async (): Promise<Product[]> => {
     },
     {
       id: 6,
-      name: "Nike Air Max 270",
-      shortDescription:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      description:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      price: 59.9,
+      name: "ALLMAX Kundalik Krossovka",
+      shortDescription: "Yengil taglikli, qulay shahar krossovkasi.",
+      description: "Erkaklar uchun yurishda charchatmaydigan qulay sport poyabzali.",
+      price: 149000,
       sizes: ["40", "42", "43", "44"],
       colors: ["gray", "white"],
       images: { gray: "/products/6g.png", white: "/products/6w.png" },
     },
     {
       id: 7,
-      name: "Nike Ultraboost Pulse ",
-      shortDescription:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      description:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      price: 69.9,
+      name: "ALLMAX Sportiv Yugurish Krossovkasi",
+      shortDescription: "Amortizatsiyali engil sport poyabzali.",
+      description: "Faol mashg'ulotlar va yugurish uchun maxsus ishlab chiqarilgan.",
+      price: 199000,
       sizes: ["40", "42", "43"],
       colors: ["gray", "pink"],
       images: { gray: "/products/7g.png", pink: "/products/7p.png" },
     },
     {
       id: 8,
-      name: "Levi’s Classic Denim",
-      shortDescription:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      description:
-        "Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit. Lorem ipsum dolor sit amet consect adipisicing elit lorem ipsum dolor sit.",
-      price: 59.9,
-      sizes: ["s", "m", "l"],
+      name: "ALLMAX Klassik Djinsi Shim",
+      shortDescription: "Mustahkam matoli qulay erkaklar djinsisi.",
+      description: "Har kungi kiyish uchun pishiq va qulay bichimdagi klassik djinsi shim.",
+      price: 99000,
+      sizes: ["s", "m", "l", "xl"],
       colors: ["blue", "green"],
       images: { blue: "/products/8b.png", green: "/products/8gr.png" },
     },
   ];
 };
 
-const PaymentsPage = async () => {
+export default async function ProductsPage() {
   const data = await getData();
   return (
-    <div className="">
-      <div className="mb-8 px-4 py-2 bg-secondary rounded-md">
-        <h1 className="font-semibold">All Products</h1>
+    <div className="py-6 max-w-7xl mx-auto space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight flex items-center gap-2">
+            <Shirt className="w-6 h-6 text-primary" /> Barcha Tovarlar Katalogi
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            ALLMAX Fix Price do&apos;konidagi faol mahsulotlar va polkalar
+          </p>
+        </div>
+        <Button asChild className="bg-primary text-primary-foreground font-medium shadow-sm">
+          <Link href="/admin/products/new">
+            <PackagePlus className="w-4 h-4 mr-2" /> Yangi tovar qo&apos;shish
+          </Link>
+        </Button>
       </div>
       <DataTable columns={columns} data={data} />
     </div>
   );
-};
-
-export default PaymentsPage;
+}

@@ -1,101 +1,165 @@
-import { PaymentFormInputs, paymentFormSchema } from "@/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, ShoppingCart } from "lucide-react";
-import Image from "next/image";
+"use client";
+
+import useCartStore from "@/stores/cartStore";
+import { ShippingFormInputs } from "@/types";
+import { formatPrice } from "@/lib/utils";
+import { CheckCircle2, CreditCard, ShieldCheck, ShoppingBag, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
-const PaymentForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<PaymentFormInputs>({
-    resolver: zodResolver(paymentFormSchema),
-  });
+interface PaymentFormProps {
+  shippingForm?: ShippingFormInputs;
+  totalAmount: number;
+}
 
+const PaymentForm = ({ shippingForm, totalAmount }: PaymentFormProps) => {
   const router = useRouter();
+  const { clearCart } = useCartStore();
+  const [paymentMethod, setPaymentMethod] = useState<"click" | "payme" | "cash">("click");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
-  const handlePaymentForm: SubmitHandler<PaymentFormInputs> = (data) => {
-    
+  const handleCheckout = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsProcessing(true);
+
+    setTimeout(() => {
+      setIsProcessing(false);
+      setIsCompleted(true);
+      clearCart();
+      toast.success("Buyurtmangiz muvaffaqiyatli qabul qilindi!");
+    }, 1200);
   };
 
+  if (isCompleted) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 bg-[#141414] rounded-2xl border border-[#262626] text-center gap-4 shadow-xl">
+        <div className="w-16 h-16 rounded-full bg-[#e30613] text-white flex items-center justify-center shadow-[0_0_20px_rgba(227,6,19,0.7)]">
+          <CheckCircle2 className="w-8 h-8" />
+        </div>
+        <div>
+          <h2 className="text-xl font-extrabold text-white">Buyurtma Qabul Qilindi!</h2>
+          <p className="text-sm text-zinc-400 mt-1">
+            Rahmat, {shippingForm?.name || "Hurmatli xaridor"}! Buyurtmangiz ALLMAX menejerlariga yetkazildi.
+          </p>
+          <div className="mt-4 p-4 bg-[#1c1c1c] rounded-xl border border-[#262626] text-xs text-left text-zinc-300 flex flex-col gap-1.5">
+            <p><strong>Yetkazish hududi:</strong> {shippingForm?.region || "Toshkent shahri"}</p>
+            <p><strong>Manzil:</strong> {shippingForm?.address || "Ko'rsatilgan manzil"}</p>
+            <p><strong>Telefon:</strong> {shippingForm?.phone || "-"}</p>
+            <p><strong>To&apos;lov usuli:</strong> <span className="text-[#e30613] font-bold uppercase">{paymentMethod}</span></p>
+            <p><strong>Jami to&apos;lov:</strong> <span className="text-white font-extrabold">{formatPrice(totalAmount)} so&apos;m</span></p>
+          </div>
+        </div>
+        <button
+          type="button"
+          onClick={() => router.push("/")}
+          className="mt-2 bg-[#e30613] hover:bg-[#bd0410] text-white px-6 py-2.5 rounded-xl text-xs font-bold cursor-pointer shadow-[0_0_15px_rgba(227,6,19,0.5)] transition-all"
+        >
+          Bosh sahifaga qaytish
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <form
-      className="flex flex-col gap-4"
-      onSubmit={handleSubmit(handlePaymentForm)}
-    >
-      <div className="flex flex-col gap-1">
-        <label htmlFor="cardHolder" className="text-xs text-gray-500 font-medium">
-          Name on card
+    <form onSubmit={handleCheckout} className="flex flex-col gap-5">
+      <div className="flex items-center gap-2 pb-2 border-b border-[#262626] text-white font-bold text-sm">
+        <CreditCard className="w-4 h-4 text-[#e30613]" />
+        <span>To&apos;lov usulini tanlang</span>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {/* CLICK */}
+        <label
+          className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
+            paymentMethod === "click"
+              ? "border-[#e30613] bg-[#e30613]/10 shadow-[0_0_15px_rgba(227,6,19,0.2)] ring-1 ring-[#e30613]"
+              : "border-[#262626] bg-[#1c1c1c] hover:border-zinc-600"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <input
+              type="radio"
+              name="payment"
+              value="click"
+              checked={paymentMethod === "click"}
+              onChange={() => setPaymentMethod("click")}
+              className="accent-[#e30613]"
+            />
+            <div>
+              <p className="font-bold text-sm text-white">Click Evolution</p>
+              <p className="text-xs text-zinc-400">Click ilovasi yoki veb-interfeys orqali to&apos;lov</p>
+            </div>
+          </div>
+          <span className="font-black text-sky-400 text-base tracking-wider">CLICK</span>
         </label>
-        <input
-          className="border-b border-gray-200 py-2 outline-none text-sm"
-          type="text"
-          id="cardHolder"
-          placeholder="John Doe"
-          {...register("cardHolder")}
-        />
-        {errors.cardHolder && (
-          <p className="text-xs text-red-500">{errors.cardHolder.message}</p>
-        )}
-      </div>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="cardNumber" className="text-xs text-gray-500 font-medium">
-          Card Number
+
+        {/* PAYME */}
+        <label
+          className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
+            paymentMethod === "payme"
+              ? "border-[#e30613] bg-[#e30613]/10 shadow-[0_0_15px_rgba(227,6,19,0.2)] ring-1 ring-[#e30613]"
+              : "border-[#262626] bg-[#1c1c1c] hover:border-zinc-600"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <input
+              type="radio"
+              name="payment"
+              value="payme"
+              checked={paymentMethod === "payme"}
+              onChange={() => setPaymentMethod("payme")}
+              className="accent-[#e30613]"
+            />
+            <div>
+              <p className="font-bold text-sm text-white">Payme</p>
+              <p className="text-xs text-zinc-400">Payme hamyoni yoki kartasi orqali to&apos;lov</p>
+            </div>
+          </div>
+          <span className="font-black text-teal-400 text-base tracking-wider">payme</span>
         </label>
-        <input
-          className="border-b border-gray-200 py-2 outline-none text-sm"
-          type="text"
-          id="cardNumber"
-          placeholder="123456789123"
-          {...register("cardNumber")}
-        />
-        {errors.cardNumber && (
-          <p className="text-xs text-red-500">{errors.cardNumber.message}</p>
-        )}
-      </div>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="expirationDate" className="text-xs text-gray-500 font-medium">
-          Expiration Date
+
+        {/* CASH / NAQD */}
+        <label
+          className={`flex items-center justify-between p-4 rounded-xl border cursor-pointer transition-all ${
+            paymentMethod === "cash"
+              ? "border-[#e30613] bg-[#e30613]/10 shadow-[0_0_15px_rgba(227,6,19,0.2)] ring-1 ring-[#e30613]"
+              : "border-[#262626] bg-[#1c1c1c] hover:border-zinc-600"
+          }`}
+        >
+          <div className="flex items-center gap-3">
+            <input
+              type="radio"
+              name="payment"
+              value="cash"
+              checked={paymentMethod === "cash"}
+              onChange={() => setPaymentMethod("cash")}
+              className="accent-[#e30613]"
+            />
+            <div>
+              <p className="font-bold text-sm text-white">Qabul qilinganda to&apos;lash</p>
+              <p className="text-xs text-zinc-400">Kuryer mahsulotni topshirganda naqd yoki karta orqali</p>
+            </div>
+          </div>
+          <span className="font-bold text-zinc-300 text-xs bg-[#262626] px-2 py-1 rounded">Naqd pul</span>
         </label>
-        <input
-          className="border-b border-gray-200 py-2 outline-none text-sm"
-          type="text"
-          id="expirationDate"
-          placeholder="01/32"
-          {...register("expirationDate")}
-        />
-        {errors.expirationDate && (
-          <p className="text-xs text-red-500">{errors.expirationDate.message}</p>
-        )}
       </div>
-      <div className="flex flex-col gap-1">
-        <label htmlFor="cvv" className="text-xs text-gray-500 font-medium">
-          CVV
-        </label>
-        <input
-          className="border-b border-gray-200 py-2 outline-none text-sm"
-          type="text"
-          id="cvv"
-          placeholder="123"
-          {...register("cvv")}
-        />
-        {errors.cvv && (
-          <p className="text-xs text-red-500">{errors.cvv.message}</p>
-        )}
+
+      <div className="flex items-center gap-2 text-xs text-zinc-400 mt-2 bg-[#1c1c1c] p-3 rounded-lg border border-[#262626]">
+        <ShieldCheck className="w-4 h-4 text-[#e30613] shrink-0" />
+        <span>Xaridlar xavfsiz himoyalangan. Tovar yoqmasa, 14 kun ichida almashtirish imkoniyati mavjud.</span>
       </div>
-      <div className='flex items-center gap-2 mt-4'>
-        <Image src="/klarna.png" alt="klarna" width={50} height={25} className="rounded-md"/>
-        <Image src="/cards.png" alt="cards" width={50} height={25} className="rounded-md"/>
-        <Image src="/stripe.png" alt="stripe" width={50} height={25} className="rounded-md"/>
-      </div>
+
       <button
         type="submit"
-        className="w-full bg-gray-800 hover:bg-gray-900 transition-all duration-300 text-white p-2 rounded-lg cursor-pointer flex items-center justify-center gap-2"
+        disabled={isProcessing}
+        className="w-full mt-2 bg-[#e30613] hover:bg-[#bd0410] transition-all duration-300 text-white p-3.5 rounded-xl cursor-pointer font-bold text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(227,6,19,0.5)] hover:shadow-[0_0_30px_rgba(227,6,19,0.8)] disabled:opacity-50"
       >
-        Checkout
-        <ShoppingCart className="w-3 h-3" />
+        <ShoppingBag className="w-4 h-4" />
+        {isProcessing
+          ? "Buyurtma rasmiylashtirilmoqda..."
+          : `Buyurtmani tasdiqlash (${formatPrice(totalAmount)} so'm)`}
       </button>
     </form>
   );

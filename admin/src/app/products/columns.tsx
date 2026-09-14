@@ -75,9 +75,17 @@ export const columns: ColumnDef<Product>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Price
+          Narx (Fix Price)
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const price = row.original.price;
+      return (
+        <div className="font-semibold text-sm">
+          {price.toLocaleString("uz-UZ")} <span className="text-xs text-muted-foreground font-normal">so&apos;m</span>
+        </div>
       );
     },
   },

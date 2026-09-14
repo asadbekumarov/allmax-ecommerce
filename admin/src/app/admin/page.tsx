@@ -6,9 +6,6 @@ export const metadata: Metadata = {
   description: "ALLMAX Fix Price do'koni boshqaruv va sotuvlar statistikasi paneli",
 };
 
-const Homepage = () => {
+export default function AdminHomePage() {
   return <AdminDashboard />;
-};
-
-export default Homepage;
-
+}

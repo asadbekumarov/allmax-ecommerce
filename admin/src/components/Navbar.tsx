@@ -27,7 +27,15 @@ const Navbar = () => {
       </Button> */}
       {/* RIGHT */}
       <div className="flex items-center gap-4">
-        <Link href="/">Dashboard</Link>
+        <Link href="/admin" className="text-sm font-medium hover:text-primary transition-colors">
+          Dashboard
+        </Link>
+        <Link href="/admin/orders" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors hidden sm:inline-block">
+          Buyurtmalar
+        </Link>
+        <Link href="/admin/products/new" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors hidden md:inline-block">
+          + Yangi tovar
+        </Link>
         {/* THEME MENU */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
