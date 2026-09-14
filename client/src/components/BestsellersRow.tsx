@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { products, FIX_PRICE_OPTIONS } from "@/data/products";
 import ProductCard from "./ProductCard";
-import { Sparkles, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function BestsellersRow() {

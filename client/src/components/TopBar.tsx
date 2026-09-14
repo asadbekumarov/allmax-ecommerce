@@ -1,6 +1,5 @@
 import React from "react";
-import { Phone, Clock, Truck, RotateCcw, Send } from "lucide-react";
-import Link from "next/link";
+import { Truck, RotateCcw, Send, Clock, Phone } from "lucide-react";
 
 export default function TopBar() {
   return (

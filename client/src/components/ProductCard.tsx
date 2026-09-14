@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 const ProductCard = ({ product }: { product: ProductType }) => {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const [selectedColor] = useState(product.colors[0]);
   const [isLiked, setIsLiked] = useState(false);
 
   const { addToCart } = useCartStore();

@@ -3,7 +3,7 @@
 import useCartStore from "@/stores/cartStore";
 import { ShippingFormInputs } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { CheckCircle2, CreditCard, ShieldCheck, ShoppingBag, Sparkles } from "lucide-react";
+import { CheckCircle2, CreditCard, ShieldCheck, ShoppingBag } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
